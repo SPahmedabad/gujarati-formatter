@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Gujarati Formatter</title>
 
-  <!-- Gujarati Font -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -18,27 +17,26 @@
     }
 
     .container {
-      max-width: 950px;
-      margin: 40px auto;
+      max-width: 1000px;
+      margin: 30px auto;
       padding: 20px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
-    .header .jai {
+    .jai {
       font-size: 28px;
       font-weight: 700;
       color: #8b1c1c;
-      margin-bottom: 6px;
     }
 
-    .header .subtitle {
-      font-size: 15px;
-      color: #7c2d12;
+    .subtitle {
+      font-size: 14px;
       opacity: 0.85;
+      margin-top: 4px;
     }
 
     .card {
@@ -50,27 +48,26 @@
     }
 
     h2 {
-      margin: 0 0 16px;
       text-align: center;
-      font-size: 24px;
-      font-weight: 600;
+      margin-bottom: 14px;
       color: #7c2d12;
     }
 
     textarea {
       width: 100%;
-      min-height: 220px;
+      min-height: 240px;
       padding: 14px 16px;
       font-family: inherit;
       font-size: 16px;
-      line-height: 1.75;
+      line-height: 1.8;
       border-radius: 12px;
       border: 1px solid #e7c9a9;
-      outline: none;
       background: #fffdf9;
+      resize: vertical;
     }
 
     textarea:focus {
+      outline: none;
       border-color: #c2410c;
       box-shadow: 0 0 0 3px rgba(194,65,12,0.2);
     }
@@ -78,29 +75,29 @@
     .actions {
       display: flex;
       justify-content: center;
-      gap: 14px;
-      margin-top: 20px;
+      gap: 12px;
+      margin: 18px 0;
       flex-wrap: wrap;
     }
 
     button {
-      padding: 10px 26px;
-      font-size: 15px;
+      padding: 10px 24px;
+      font-size: 14px;
       font-weight: 600;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      transition: all 0.2s ease;
       font-family: inherit;
     }
 
-    .btn-format {
+    .btn-main {
       background: linear-gradient(135deg, #c2410c, #9a3412);
       color: #fff;
     }
 
-    .btn-format:hover {
-      transform: translateY(-1px);
+    .btn-copy {
+      background: #065f46;
+      color: #fff;
     }
 
     .btn-clear {
@@ -109,56 +106,21 @@
       border: 1px solid #f3d9b1;
     }
 
-    .btn-copy {
-      background: #065f46;
-      color: #fff;
-    }
-
-    .btn-copy:hover {
-      background: #047857;
-    }
-
-    .output {
-      margin-top: 32px;
-      padding-top: 20px;
-      border-top: 1px dashed #e7c9a9;
-    }
-
-    .title {
-      margin: 20px 0 8px;
-      font-weight: 700;
-      font-size: 17px;
-      color: #8b1c1c;
-    }
-
-    ul {
-      margin: 0 0 16px 24px;
-      padding: 0;
-    }
-
-    li {
-      margin-bottom: 6px;
-      line-height: 1.75;
-    }
-
-    li::marker {
-      color: #c2410c;
-    }
+    .btn-copy:hover { background: #047857; }
 
     .footer {
-      margin-top: 28px;
+      margin-top: 20px;
       text-align: center;
       font-size: 13px;
-      color: #7c2d12;
       opacity: 0.75;
     }
 
     .copied {
       text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
       color: #065f46;
+      font-size: 14px;
       display: none;
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -166,96 +128,76 @@
 <body>
 
 <div class="container">
-
   <div class="header">
     <div class="jai">🙏 જય શ્રી સ્વામિનારાયણ 🙏</div>
     <div class="subtitle">Gujarati Katha & Pravachan Formatter</div>
   </div>
 
   <div class="card">
-    <h2>Gujarati Formatter</h2>
-
-    <textarea id="input" placeholder="અહીં ગુજરાતી લખાણ પેસ્ટ કરો..."></textarea>
+    <h2>Input Text</h2>
+    <textarea id="input" placeholder="અહીં કાચું ગુજરાતી લખાણ પેસ્ટ કરો..."></textarea>
 
     <div class="actions">
-      <button class="btn-format" onclick="formatGujarati()">Format</button>
-      <button class="btn-copy" onclick="copyOutput()">Copy</button>
+      <button class="btn-main" onclick="formatGujarati()">Format ↓</button>
       <button class="btn-clear" onclick="clearAll()">Clear</button>
+    </div>
+
+    <h2>Formatted Editable Output</h2>
+    <textarea id="output" placeholder="અહીં ફોર્મેટ થયેલું લખાણ આવશે (તમે edit કરી શકો છો)..."></textarea>
+
+    <div class="actions">
+      <button class="btn-copy" onclick="copyFormatted()">Copy Formatted Text</button>
     </div>
 
     <div class="copied" id="copiedMsg">✅ Copied to clipboard</div>
 
-    <div class="output" id="output"></div>
-
     <div class="footer">
-      👉 શીર્ષક ઓળખ • વાક્ય પ્રમાણે બુલેટ • કથા માટે અનુકૂળ રચના
+      👉 મોટા ગ્રંથ માટે યોગ્ય • Editable Output • Copy after edit
     </div>
   </div>
-
 </div>
 
 <script>
 function formatGujarati() {
-  const text = document.getElementById("input").value;
-  const lines = text.split(/\n+/);
-  const outputDiv = document.getElementById("output");
-  outputDiv.innerHTML = "";
+  const input = document.getElementById("input").value;
+  const lines = input.split(/\n+/);
+  let result = "";
 
-  lines.forEach((line, index) => {
-    const trimmed = line.trim();
-    if (!trimmed) return;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
 
-    const nextLine = lines[index + 1]?.trim() || "";
+    const next = lines[i + 1]?.trim() || "";
 
     const isTitle =
-      trimmed.length <= 60 &&
-      !/[।॥.]/.test(trimmed) &&
-      nextLine.length > trimmed.length;
+      line.length <= 60 &&
+      !/[।॥.]/.test(line) &&
+      next.length > line.length;
 
     if (isTitle) {
-      const title = document.createElement("div");
-      title.className = "title";
-      title.innerText = "👉 " + trimmed;
-      outputDiv.appendChild(title);
-      return;
+      result += "👉 " + line + "\n\n";
+      continue;
     }
 
-    const sentences = trimmed.match(/[^।॥.]+[।॥.]*["”]?/g);
-    if (!sentences) return;
+    const sentences = line.match(/[^।॥.]+[।॥.]*["”]?/g);
+    if (!sentences) continue;
 
-    const ul = document.createElement("ul");
-
-    sentences.forEach(sent => {
-      sent = sent.trim();
-      if (!sent) return;
-      if (/^[।॥."”]+$/.test(sent)) return;
-      if (/^\d+\.$/.test(sent)) return;
-
-      const li = document.createElement("li");
-      li.innerText = sent;
-      ul.appendChild(li);
+    sentences.forEach(s => {
+      s = s.trim();
+      if (!s) return;
+      result += "• " + s + "\n";
     });
 
-    outputDiv.appendChild(ul);
-  });
+    result += "\n";
+  }
+
+  document.getElementById("output").value = result.trim();
 }
 
-function copyOutput() {
-  const output = document.getElementById("output");
-  let textToCopy = "";
-
-  output.childNodes.forEach(node => {
-    if (node.classList && node.classList.contains("title")) {
-      textToCopy += node.innerText + "\n";
-    } else if (node.tagName === "UL") {
-      node.querySelectorAll("li").forEach(li => {
-        textToCopy += "• " + li.innerText + "\n";
-      });
-      textToCopy += "\n";
-    }
-  });
-
-  navigator.clipboard.writeText(textToCopy.trim());
+function copyFormatted() {
+  const out = document.getElementById("output");
+  out.select();
+  document.execCommand("copy");
 
   const msg = document.getElementById("copiedMsg");
   msg.style.display = "block";
@@ -264,7 +206,7 @@ function copyOutput() {
 
 function clearAll() {
   document.getElementById("input").value = "";
-  document.getElementById("output").innerHTML = "";
+  document.getElementById("output").value = "";
 }
 </script>
 
