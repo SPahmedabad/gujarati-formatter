@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gujarati Formatter</title>
+  <style>
+    body { font-family: Noto Serif Gujarati, serif; padding: 20px; }
+    textarea { width: 100%; height: 200px; }
+    .output { margin-top: 20px; }
+    ul { margin-left: 20px; }
+    .title { font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h2>Gujarati Formatter</h2>
+
+<textarea id="input" placeholder="અહીં લખો..."></textarea>
+<br><br>
+<button onclick="formatGujarati()">Format</button>
+
+<div class="output" id="output"></div>
+
+<script>
+function formatGujarati() {
+  const text = document.getElementById("input").value;
+  const lines = text.split(/\n+/);
+  const outputDiv = document.getElementById("output");
+  outputDiv.innerHTML = "";
+
+  let prevLine = "";
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    if (!trimmed) return;
+
+    const nextLine = lines[index + 1]?.trim() || "";
+
+    const isTitle =
+      trimmed.length <= 60 &&
+      !/[।॥.]/.test(trimmed) &&
+      nextLine.length > trimmed.length;
+
+    // TITLE
+    if (isTitle) {
+      const title = document.createElement("div");
+      title.className = "title";
+      title.innerText = "👉 " + trimmed;
+      outputDiv.appendChild(title);
+      return;
+    }
+
+    // SENTENCE SPLIT (same regex)
+    const sentences = trimmed.match(/[^।॥.]+[।॥.]*["”]?/g);
+    if (!sentences) return;
+
+    const ul = document.createElement("ul");
+
+    sentences.forEach(sent => {
+      sent = sent.trim();
+      if (!sent) return;
+      if (/^[।॥."”]+$/.test(sent)) return;
+      if (/^\d+\.$/.test(sent)) return;
+
+      const li = document.createElement("li");
+      li.innerText = sent;
+      ul.appendChild(li);
+    });
+
+    outputDiv.appendChild(ul);
+  });
+}
+</script>
+
+</body>
+</html>
