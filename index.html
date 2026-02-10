@@ -8,9 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -82,6 +80,7 @@
       justify-content: center;
       gap: 14px;
       margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     button {
@@ -102,7 +101,6 @@
 
     .btn-format:hover {
       transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
     }
 
     .btn-clear {
@@ -111,8 +109,13 @@
       border: 1px solid #f3d9b1;
     }
 
-    .btn-clear:hover {
-      background: #fde68a;
+    .btn-copy {
+      background: #065f46;
+      color: #fff;
+    }
+
+    .btn-copy:hover {
+      background: #047857;
     }
 
     .output {
@@ -149,6 +152,14 @@
       color: #7c2d12;
       opacity: 0.75;
     }
+
+    .copied {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #065f46;
+      display: none;
+    }
   </style>
 </head>
 
@@ -168,8 +179,11 @@
 
     <div class="actions">
       <button class="btn-format" onclick="formatGujarati()">Format</button>
+      <button class="btn-copy" onclick="copyOutput()">Copy</button>
       <button class="btn-clear" onclick="clearAll()">Clear</button>
     </div>
+
+    <div class="copied" id="copiedMsg">✅ Copied to clipboard</div>
 
     <div class="output" id="output"></div>
 
@@ -224,6 +238,28 @@ function formatGujarati() {
 
     outputDiv.appendChild(ul);
   });
+}
+
+function copyOutput() {
+  const output = document.getElementById("output");
+  let textToCopy = "";
+
+  output.childNodes.forEach(node => {
+    if (node.classList && node.classList.contains("title")) {
+      textToCopy += node.innerText + "\n";
+    } else if (node.tagName === "UL") {
+      node.querySelectorAll("li").forEach(li => {
+        textToCopy += "• " + li.innerText + "\n";
+      });
+      textToCopy += "\n";
+    }
+  });
+
+  navigator.clipboard.writeText(textToCopy.trim());
+
+  const msg = document.getElementById("copiedMsg");
+  msg.style.display = "block";
+  setTimeout(() => msg.style.display = "none", 1500);
 }
 
 function clearAll() {
