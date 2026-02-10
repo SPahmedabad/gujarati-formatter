@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Gujarati Formatter</title>
 
+  <!-- Gujarati Font -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -55,7 +56,6 @@
 
     textarea {
       width: 100%;
-      min-height: 240px;
       padding: 14px 16px;
       font-family: inherit;
       font-size: 16px;
@@ -70,6 +70,14 @@
       outline: none;
       border-color: #c2410c;
       box-shadow: 0 0 0 3px rgba(194,65,12,0.2);
+    }
+
+    #input {
+      min-height: 240px;
+    }
+
+    #output {
+      min-height: 520px; /* BIG output editor */
     }
 
     .actions {
@@ -158,6 +166,11 @@
 </div>
 
 <script>
+function autoGrow(el) {
+  el.style.height = "auto";
+  el.style.height = el.scrollHeight + 4 + "px";
+}
+
 function formatGujarati() {
   const input = document.getElementById("input").value;
   const lines = input.split(/\n+/);
@@ -191,7 +204,9 @@ function formatGujarati() {
     result += "\n";
   }
 
-  document.getElementById("output").value = result.trim();
+  const output = document.getElementById("output");
+  output.value = result.trim();
+  autoGrow(output);
 }
 
 function copyFormatted() {
